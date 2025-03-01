@@ -3,7 +3,7 @@
   "ManifestType": "Build",
   "Endpoints": [
     {
-      "Route": "EnglishNow.Web.bg7ayg7prw.styles.css",
+      "Route": "EnglishNow.Web.03rrqlfso5.styles.css",
       "AssetFile": "EnglishNow.Web.styles.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -17,7 +17,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1132"
+          "Value": "1734"
         },
         {
           "Name": "Content-Type",
@@ -25,21 +25,21 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"O5Yhr19UocgC1QljyZtS8Bm4Af3h1xSpvoNJtM26yS4=\""
+          "Value": "\"3H+a2ApoE2V+8Nykh5DIJNyxSEBrGwM/6khiIz7X/k8=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 28 Feb 2025 14:02:16 GMT"
+          "Value": "Sat, 01 Mar 2025 00:36:36 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "bg7ayg7prw"
+          "Value": "03rrqlfso5"
         },
         {
           "Name": "integrity",
-          "Value": "sha256-O5Yhr19UocgC1QljyZtS8Bm4Af3h1xSpvoNJtM26yS4="
+          "Value": "sha256-3H+a2ApoE2V+8Nykh5DIJNyxSEBrGwM/6khiIz7X/k8="
         },
         {
           "Name": "label",
@@ -62,7 +62,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "1132"
+          "Value": "1734"
         },
         {
           "Name": "Content-Type",
@@ -70,17 +70,17 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"O5Yhr19UocgC1QljyZtS8Bm4Af3h1xSpvoNJtM26yS4=\""
+          "Value": "\"3H+a2ApoE2V+8Nykh5DIJNyxSEBrGwM/6khiIz7X/k8=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Fri, 28 Feb 2025 14:02:16 GMT"
+          "Value": "Sat, 01 Mar 2025 00:36:36 GMT"
         }
       ],
       "EndpointProperties": [
         {
           "Name": "integrity",
-          "Value": "sha256-O5Yhr19UocgC1QljyZtS8Bm4Af3h1xSpvoNJtM26yS4="
+          "Value": "sha256-3H+a2ApoE2V+8Nykh5DIJNyxSEBrGwM/6khiIz7X/k8="
         }
       ]
     },
