@@ -1,7 +1,8 @@
+using EnglishNow.Repositories;
 using EnglishNow.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -17,7 +18,11 @@ builder.Services
 
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
-var app = builder.Build();
+var connectionString = builder.Configuration.GetConnectionString("EnglishNowConnectionString");
+
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>(c => new UsuarioRepository(connectionString!));
+
+WebApplication app = builder.Build();
 
 //Usando tela de erro customizada mesmo em ambiente de desenvolvimento
 app.UseExceptionHandler("/Erro/Index");

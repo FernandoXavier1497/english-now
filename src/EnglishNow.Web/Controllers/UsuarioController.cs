@@ -35,7 +35,7 @@ namespace EnglishNow.Web.Controllers
             {
                 ModelState.AddModelError(string.Empty, result.MensagemErro);
 
-                return View(result);
+                return View(model);
             }
             var claims = new List<Claim>
             {
