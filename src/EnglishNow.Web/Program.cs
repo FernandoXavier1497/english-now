@@ -16,6 +16,8 @@ builder.Services
         Options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
     });
 
+builder.Configuration.AddEnvironmentVariables();
+
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
 var connectionString = builder.Configuration.GetConnectionString("EnglishNowConnectionString");
