@@ -12,6 +12,8 @@ namespace EnglishNow.Repositories
     public interface IUsuarioRepository
     {
         Usuario? ObterPorLogin(string login);
+
+        int? Inserir(Usuario usuario);
     }
     public class UsuarioRepository : BaseRepository, IUsuarioRepository 
     {
@@ -51,6 +53,27 @@ namespace EnglishNow.Repositories
             }
 
             return usuario;
+        }
+        public int? Inserir(Usuario usuario)
+        {
+            int? usuarioId = null;
+            using (var conn = new MySqlConnection(ConnectionString))
+            {
+                string query = @"INSERT INTO usuario (login, senha, papel_id) VALUES (@login, @senha, @papel_id); 
+                                SELECT LAST_INSERT_ID()";
+
+                var cmd = new MySqlCommand(query, conn);
+
+                cmd.Parameters.AddWithValue("@login", usuario.Login);
+                cmd.Parameters.AddWithValue("@senha", usuario.Senha);
+                cmd.Parameters.AddWithValue("@papel_id", usuario.PapelId);
+
+                conn.Open();
+
+                usuarioId = Convert.ToInt32(cmd.ExecuteScalar());
+            }
+
+            return usuarioId;
         }
     }
 }

@@ -18,13 +18,19 @@ builder.Services
 
 builder.Configuration.AddEnvironmentVariables();
 
+
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+
+builder.Services.AddScoped<IProfessorService, ProfessorService>();
+
 
 var connectionString = builder.Configuration.GetConnectionString("EnglishNowConnectionString");
 
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>(c => new UsuarioRepository(connectionString!));
 
-WebApplication app = builder.Build();
+builder.Services.AddScoped<IProfessorRepository, ProfessorRepository>(c => new ProfessorRepository(connectionString!));
+
+var app = builder.Build();
 
 //Usando tela de erro customizada mesmo em ambiente de desenvolvimento
 app.UseExceptionHandler("/Erro/Index");
