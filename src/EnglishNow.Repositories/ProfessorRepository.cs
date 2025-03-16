@@ -12,6 +12,8 @@ namespace EnglishNow.Repositories
     public interface IProfessorRepository
     {
         public int? Inserir(Professor professor);
+
+        IList<Professor> Listar();
     }
     public class ProfessorRepository : BaseRepository, IProfessorRepository
     {
@@ -39,6 +41,55 @@ namespace EnglishNow.Repositories
             }
 
             return professorId;
+        }
+
+        public IList<Professor> Listar()
+        {
+            var result = new List<Professor>();
+
+            using (var coon = new MySqlConnection(ConnectionString))
+            {
+                string query = @"SELECT 
+    p.professor_id, 
+    p.nome, 
+    p.email, 
+    u.usuario_id, 
+    u.login, 
+    u.senha 
+    FROM professor p 
+    INNER JOIN usuario u 
+    ON p.usuario_id = u.usuario_id
+    ORDER BY p.professor_id;
+";
+
+                var cmd = new MySqlCommand(query, coon);
+
+                coon.Open();
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var professor = new Professor
+                        {
+                            Id = reader.GetInt32("professor_id"),
+                            Nome = reader.GetString("nome"),
+                            Email = reader.GetString("email"),
+                            UsuarioId = reader.GetInt32("usuario_id"),
+                            Usuario = new Usuario
+                            {
+                                Id = reader.GetInt32("usuario_id"),
+                                Login = reader.GetString("login"),
+                                Senha = reader.GetString("Senha") 
+                            }
+                        };
+
+                        result.Add(professor);
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }
