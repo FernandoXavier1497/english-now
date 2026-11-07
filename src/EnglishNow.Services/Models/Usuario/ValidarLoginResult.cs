@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EnglishNow.Services.Enums;
 
 namespace EnglishNow.Services.Models.Usuario
 {
     public class ValidarLoginResult : BaseResult
     {
+        public int UsuarioId { get; set; }
 
+        public string? Login { get; set; }
+
+        public Papel Papel { get; set; }
     }
 }

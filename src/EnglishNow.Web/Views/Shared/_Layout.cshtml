@@ -1,5 +1,8 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@{
+    var controllerAtual = ViewContext.RouteData.Values["controller"]?.ToString();
+}
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,20 +23,32 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            <a class="nav-link @(controllerAtual == "Home" ? "active" : "")" href="/">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Alunos</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Professores</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Turmas</a>
+                        @if (User.IsInRole(Perfis.Administrador))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(controllerAtual == "Aluno" ? "active" : "")" asp-controller="Aluno" asp-action="Listar">Alunos</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link @(controllerAtual == "Professor" ? "active" : "")" asp-controller="Professor" asp-action="Listar">Professores</a>
+                            </li>
+                        }
+                        @if (User.IsInRole(Perfis.Administrador) || User.IsInRole(Perfis.Professor))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(controllerAtual == "Turma" || controllerAtual == "Boletim" ? "active" : "")" asp-controller="Turma" asp-action="Listar">Turmas</a>
+                            </li>
+                        }
+                        @if (User.IsInRole(Perfis.Aluno))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(controllerAtual == "Boletim" ? "active" : "")" asp-controller="Boletim" asp-action="MeuBoletim">Meu boletim</a>
+                            </li>
+                        }
                     </ul>
-                    <form class="d-flex" role="search" asp-controller="Usuario" asp-action="Logout">
-                      
+                    <form class="d-flex align-items-center" asp-controller="Usuario" asp-action="Logout" method="post">
+                        <span class="navbar-text text-white me-3">@User.Identity?.Name</span>
                         <button class="btn btn-outline-light" type="submit">Sair</button>
                     </form>
                 </div>
@@ -51,13 +66,7 @@
                 <b> EnglishNow</b>
             </a>
 
-            <ul class="nav col-md-4 justify-content-end">
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Home</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Features</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Pricing</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">FAQs</a></li>
-                <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">About</a></li>
-            </ul>
+            <div class="col-md-4"></div>
         </footer>
 
     </div>

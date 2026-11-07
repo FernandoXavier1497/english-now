@@ -8,7 +8,7 @@ namespace EnglishNow.Services.Enums
 {
     public enum Papel
     {
-        Adiministrador = 1,
+        Administrador = 1,
             Professor = 2,
             Aluno = 3,
     }

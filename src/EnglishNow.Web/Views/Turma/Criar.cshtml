@@ -1,0 +1,44 @@
+@model EnglishNow.Web.Models.Turma.CriarViewModel
+@{
+    ViewData["Title"] = "Nova Turma";
+}
+
+<h1 style="font-size: 50px;">Nova Turma</h1>
+
+<form class="row g-3 needs-validation" asp-controller="Turma" asp-action="Criar" method="post" novalidate>
+    <div class="col-md-3">
+        <label for="inputAno" class="form-label">Ano</label>
+        <input type="number" class="form-control" id="inputAno" asp-for="Ano" min="2000" max="2100" required>
+    </div>
+    <div class="col-md-3">
+        <label for="inputSemestre" class="form-label">Semestre</label>
+        <select class="form-select" id="inputSemestre" asp-for="Semestre" required>
+            <option value="">Selecione...</option>
+            <option value="1">1º semestre</option>
+            <option value="2">2º semestre</option>
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label for="inputNivel" class="form-label">Nível</label>
+        <input type="text" class="form-control" id="inputNivel" placeholder="Ex.: Basic, Intermediate..." maxlength="30" asp-for="Nivel" required>
+    </div>
+    <div class="col-md-6">
+        <label for="inputPeriodo" class="form-label">Período</label>
+        <input type="text" class="form-control" id="inputPeriodo" placeholder="Ex.: Noite, Seg e Qua 19h..." maxlength="150" asp-for="Periodo" required>
+    </div>
+    <div class="col-md-6">
+        <label for="inputProfessor" class="form-label">Professor</label>
+        <select class="form-select" id="inputProfessor" asp-for="ProfessorId" asp-items="Model.Professores" required>
+            <option value="">Selecione...</option>
+        </select>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a class="btn btn-outline-secondary mx-2" asp-controller="Turma" asp-action="Listar">Voltar</a>
+        @Html.ValidationSummary(false, "", new { @class = "text-danger", style = "margin-bottom: 40px; " })
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidacaoBootstrap" />
+}

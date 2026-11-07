@@ -31,7 +31,7 @@ namespace EnglishNow.Web.Mappings
             return viewModel;
         }
 
-        public static EditarViewModel MapToEditarViewNodel(this ProfessorResult model)
+        public static EditarViewModel MapToEditarViewModel(this ProfessorResult model)
         {
             var viewModel = new EditarViewModel
             {

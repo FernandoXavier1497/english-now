@@ -1,7 +1,23 @@
-﻿@{
+@{
     ViewData["Title"] = "Home Page";
 }
 <div class="text-center">
     <h1 class="display-3"><b>Bem-vindo</b></h1>
     <p>Esse é o portal da escola <b>EnglishNow.</b></p>
+
+    <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+        @if (User.IsInRole(Perfis.Administrador))
+        {
+            <a class="btn btn-primary" asp-controller="Aluno" asp-action="Listar">Alunos</a>
+            <a class="btn btn-primary" asp-controller="Professor" asp-action="Listar">Professores</a>
+        }
+        @if (User.IsInRole(Perfis.Administrador) || User.IsInRole(Perfis.Professor))
+        {
+            <a class="btn btn-primary" asp-controller="Turma" asp-action="Listar">Turmas</a>
+        }
+        @if (User.IsInRole(Perfis.Aluno))
+        {
+            <a class="btn btn-primary" asp-controller="Boletim" asp-action="MeuBoletim">Meu boletim</a>
+        }
+    </div>
 </div>

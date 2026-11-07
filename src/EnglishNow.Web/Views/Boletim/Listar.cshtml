@@ -1,0 +1,88 @@
+@model EnglishNow.Web.Models.Boletim.TurmaBoletinsViewModel
+@{
+    ViewData["Title"] = "Alunos e notas";
+    var ehAdministrador = User.IsInRole(Perfis.Administrador);
+}
+
+<h1>Alunos e notas</h1>
+<p class="lead mb-1">Turma: <b>@Model.TurmaDescricao</b></p>
+<p class="text-body-secondary">Professor: @Model.ProfessorNome</p>
+
+@if (TempData["Erro"] != null)
+{
+    <div class="alert alert-danger" role="alert">@TempData["Erro"]</div>
+}
+
+@if (ehAdministrador)
+{
+    <form class="row g-2 align-items-end py-2" asp-controller="Boletim" asp-action="Matricular" asp-route-turmaId="@Model.TurmaId" method="post">
+        <div class="col-md-6">
+            <label for="inputAluno" class="form-label">Matricular aluno</label>
+            <select class="form-select" id="inputAluno" name="alunoId">
+                <option value="">Selecione...</option>
+                @foreach (var aluno in Model.AlunosDisponiveis)
+                {
+                    <option value="@aluno.Value">@aluno.Text</option>
+                }
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Matricular</button>
+        </div>
+    </form>
+}
+
+@if (Model.Boletins.Count == 0)
+{
+    <p class="text-body-secondary mt-3">Nenhum aluno matriculado nesta turma.</p>
+}
+else
+{
+    <div class="table-responsive mt-3">
+        <table class="table table-striped table-sm align-middle text-center">
+            <thead>
+                <tr>
+                    <th rowspan="2" class="text-start">Aluno</th>
+                    <th colspan="4">1º bimestre</th>
+                    <th colspan="4">2º bimestre</th>
+                    <th rowspan="2">Final do semestre</th>
+                    <th rowspan="2">Faltas</th>
+                    <th rowspan="2"></th>
+                </tr>
+                <tr>
+                    <th>Escrita</th><th>Leitura</th><th>Conversação</th><th>Média</th>
+                    <th>Escrita</th><th>Leitura</th><th>Conversação</th><th>Média</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var b in Model.Boletins)
+                {
+                    <tr>
+                        <td class="text-start">@b.AlunoNome</td>
+                        <td>@b.NotaBim1Escrita.Nota()</td>
+                        <td>@b.NotaBim1Leitura.Nota()</td>
+                        <td>@b.NotaBim1Conversacao.Nota()</td>
+                        <td><b>@b.NotaBim1Final.Nota()</b></td>
+                        <td>@b.NotaBim2Escrita.Nota()</td>
+                        <td>@b.NotaBim2Leitura.Nota()</td>
+                        <td>@b.NotaBim2Conversacao.Nota()</td>
+                        <td><b>@b.NotaBim2Final.Nota()</b></td>
+                        <td><b>@b.NotaFinalSemestre.Nota()</b></td>
+                        <td>@b.FaltasSemestre.Faltas()</td>
+                        <td class="text-nowrap">
+                            <a class="link-underline link-underline-opacity-0" asp-controller="Boletim" asp-action="LancarNotas" asp-route-id="@b.Id">Lançar notas</a>
+                            @if (ehAdministrador)
+                            {
+                                <form class="d-inline" asp-controller="Boletim" asp-action="Remover" asp-route-id="@b.Id" method="post" onsubmit="return confirm('Remover a matrícula deste aluno? As notas lançadas serão apagadas.')">
+                                    <button type="submit" class="btn btn-link btn-sm text-danger p-0 ms-2">Remover</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+<a class="btn btn-outline-secondary" asp-controller="Turma" asp-action="Listar">Voltar às turmas</a>

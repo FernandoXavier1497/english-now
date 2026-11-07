@@ -17,6 +17,8 @@ namespace EnglishNow.Services
 
         ProfessorResult? ObterPorId(int id);
 
+        ProfessorResult? ObterPorUsuarioId(int usuarioId);
+
     }
     public class ProfessorService: IProfessorService
     {
@@ -24,11 +26,15 @@ namespace EnglishNow.Services
 
         private readonly IUsuarioRepository _usuarioRepository;
 
-        public ProfessorService(IProfessorRepository professorRepository, IUsuarioRepository usuarioRepository)
+        private readonly ITurmaRepository _turmaRepository;
+
+        public ProfessorService(IProfessorRepository professorRepository, IUsuarioRepository usuarioRepository, ITurmaRepository turmaRepository)
         {
             _professorRepository = professorRepository;
 
             _usuarioRepository = usuarioRepository;
+
+            _turmaRepository = turmaRepository;
         }
         public CriarProfessorResult Criar(CriarProfessorRequest request)
         {
@@ -86,7 +92,7 @@ namespace EnglishNow.Services
 
             if (affectedRows == 0)
             {
-                result.MensagemErro = "Não foi possivel atualizar o professor";
+                result.MensagemErro = "Não foi possível atualizar o professor";
                 return result;
             }
 
@@ -96,7 +102,7 @@ namespace EnglishNow.Services
 
             if (affectedRows == 0)
             {
-                result.MensagemErro = "Não foi possivel atualizar o usuário";
+                result.MensagemErro = "Não foi possível atualizar o usuário";
                 return result;
             }
 
@@ -118,12 +124,20 @@ namespace EnglishNow.Services
                 return result;
             }
 
+            //O professor não pode ser excluído enquanto tiver turmas (chave estrangeira em turma.professor_id)
+            if (_turmaRepository.ContarPorProfessor(id) > 0)
+            {
+                result.MensagemErro = "Não é possível excluir o professor, pois ele possui turmas. Mude o professor dessas turmas antes.";
+
+                return result;
+            }
+
             var affectedRows =  _professorRepository.Apagar(id);
 
             if (affectedRows == 0)
             {
 
-                result.MensagemErro = "Não foi possivel exluir o professor";
+                result.MensagemErro = "Não foi possível excluir o professor";
 
                 return result;
              }
@@ -132,7 +146,7 @@ namespace EnglishNow.Services
 
             if (affectedRows == 0)
             {
-                result.MensagemErro = "Não foi possivel exluir o usuário";
+                result.MensagemErro = "Não foi possível excluir o usuário";
 
                 return result;
             }
@@ -162,6 +176,17 @@ namespace EnglishNow.Services
             var result = professor.MapToProfessorResult();
 
             return result;
+        }
+
+        public ProfessorResult? ObterPorUsuarioId(int usuarioId)
+        {
+            var professor = _professorRepository.ObterPorUsuarioId(usuarioId);
+
+            if (professor == null)
+
+                return null;
+
+            return professor.MapToProfessorResult();
         }
     }
 }

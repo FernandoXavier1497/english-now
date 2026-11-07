@@ -1,4 +1,4 @@
-﻿using EnglishNow.Services;
+using EnglishNow.Services;
 using EnglishNow.Web.Models.Usuario;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -22,24 +22,28 @@ namespace EnglishNow.Web.Controllers
 
         [HttpPost]
         [Route("login")]
-        public IActionResult Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            var result = _usuarioService.ValidarLogin(model.Usuario, model.Senha);
+            var result = _usuarioService.ValidarLogin(model.Usuario!, model.Senha!);
 
             if (!result.Sucesso)
             {
-                ModelState.AddModelError(string.Empty, result.MensagemErro);
+                ModelState.AddModelError(string.Empty, result.MensagemErro!);
 
                 return View(model);
             }
+
+            // O papel vai no cookie para o [Authorize(Roles = ...)] saber o que cada um pode acessar
             var claims = new List<Claim>
             {
-                new (ClaimTypes.NameIdentifier, model.Usuario!)
+                new (ClaimTypes.NameIdentifier, result.UsuarioId.ToString()),
+                new (ClaimTypes.Name, result.Login!),
+                new (ClaimTypes.Role, result.Papel.ToString())
             };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -50,7 +54,7 @@ namespace EnglishNow.Web.Controllers
                 IsPersistent = model.LembrarMe
             };
 
-            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity), properties);
 
             return RedirectToAction("Index", "Home");
@@ -58,9 +62,9 @@ namespace EnglishNow.Web.Controllers
 
         [HttpPost]
         [Route("logout")]
-        public IActionResult Logout()
+        public async Task<IActionResult> Logout()
         {
-            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             return RedirectToAction("Login", "Usuario");
         }

@@ -1,4 +1,4 @@
-﻿CREATE SCHEMA IF NOT EXISTS `english_now` DEFAULT CHARACTER SET utf8 
+﻿CREATE SCHEMA IF NOT EXISTS `english_now` DEFAULT CHARACTER SET utf8;
 
 CREATE TABLE IF NOT EXISTS `english_now`.`papel` (
   `papel_id` INT NOT NULL AUTO_INCREMENT,
@@ -73,36 +73,36 @@ CREATE TABLE IF NOT EXISTS `english_now`.`aluno_turma_boletim` (
   CONSTRAINT `turma_boletim`
     FOREIGN KEY (`turma_id`)
     REFERENCES `english_now`.`turma` (`turma_id`))
-ENGINE = InnoDB
+ENGINE = InnoDB;
 
-INSERT INTO `english_now`.`papel`
+INSERT IGNORE INTO `english_now`.`papel`
 (`papel_id`,
 `nome`)
 VALUES
 (1,
 'Administrador');
 
-INSERT INTO `english_now`.`papel`
+INSERT IGNORE INTO `english_now`.`papel`
 (`papel_id`,
 `nome`)
 VALUES
 (2,
 'Professor');
 
-INSERT INTO `english_now`.`papel`
+INSERT IGNORE INTO `english_now`.`papel`
 (`papel_id`,
 `nome`)
 VALUES
 (3,
 'Aluno');
 
-INSERT INTO `english_now`.`usuario`
+INSERT IGNORE INTO `english_now`.`usuario`
 (`usuario_id`,
 `login`,
 `senha`,
 `papel_id`)
 VALUES
 (1,
-'adimin',
-123,
+'admin',
+'123',
 1);

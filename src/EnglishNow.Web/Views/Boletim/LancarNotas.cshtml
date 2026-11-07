@@ -1,0 +1,67 @@
+@model EnglishNow.Web.Models.Boletim.LancarNotasViewModel
+@{
+    ViewData["Title"] = "Lançar notas";
+    const string padraoNota = "^(10([,]0{1,2})?|[0-9]([,][0-9]{1,2})?)$";
+    const string dicaNota = "Nota de 0 a 10, usando vírgula (ex.: 7,5)";
+}
+
+<h1>Lançar notas</h1>
+<p class="lead mb-1">Aluno: <b>@Model.AlunoNome</b></p>
+<p class="text-body-secondary">Turma: @Model.TurmaDescricao</p>
+
+<form class="row g-3 needs-validation" asp-controller="Boletim" asp-action="LancarNotas" asp-route-id="@Model.Id" method="post" novalidate>
+    <input type="hidden" asp-for="Id" />
+
+    <div class="col-12"><h5 class="mb-0">1º bimestre</h5></div>
+    <div class="col-md-4">
+        <label for="inputB1E" class="form-label">Escrita</label>
+        <input type="text" inputmode="decimal" class="form-control" id="inputB1E" asp-for="NotaBim1Escrita" pattern="@padraoNota" title="@dicaNota" placeholder="0 a 10">
+    </div>
+    <div class="col-md-4">
+        <label for="inputB1L" class="form-label">Leitura</label>
+        <input type="text" inputmode="decimal" class="form-control" id="inputB1L" asp-for="NotaBim1Leitura" pattern="@padraoNota" title="@dicaNota" placeholder="0 a 10">
+    </div>
+    <div class="col-md-4">
+        <label for="inputB1C" class="form-label">Conversação</label>
+        <input type="text" inputmode="decimal" class="form-control" id="inputB1C" asp-for="NotaBim1Conversacao" pattern="@padraoNota" title="@dicaNota" placeholder="0 a 10">
+    </div>
+
+    <div class="col-12 mt-4"><h5 class="mb-0">2º bimestre</h5></div>
+    <div class="col-md-4">
+        <label for="inputB2E" class="form-label">Escrita</label>
+        <input type="text" inputmode="decimal" class="form-control" id="inputB2E" asp-for="NotaBim2Escrita" pattern="@padraoNota" title="@dicaNota" placeholder="0 a 10">
+    </div>
+    <div class="col-md-4">
+        <label for="inputB2L" class="form-label">Leitura</label>
+        <input type="text" inputmode="decimal" class="form-control" id="inputB2L" asp-for="NotaBim2Leitura" pattern="@padraoNota" title="@dicaNota" placeholder="0 a 10">
+    </div>
+    <div class="col-md-4">
+        <label for="inputB2C" class="form-label">Conversação</label>
+        <input type="text" inputmode="decimal" class="form-control" id="inputB2C" asp-for="NotaBim2Conversacao" pattern="@padraoNota" title="@dicaNota" placeholder="0 a 10">
+    </div>
+
+    <div class="col-12 mt-4"><h5 class="mb-0">Semestre</h5></div>
+    <div class="col-md-4">
+        <label for="inputFaltas" class="form-label">Faltas</label>
+        <input type="number" class="form-control" id="inputFaltas" asp-for="FaltasSemestre" min="0" max="999">
+    </div>
+
+    <div class="col-12">
+        <p class="text-body-secondary mb-1">
+            Médias atuais: 1º bimestre <b>@Model.NotaBim1Final.Nota()</b> &middot;
+            2º bimestre <b>@Model.NotaBim2Final.Nota()</b> &middot;
+            final do semestre <b>@Model.NotaFinalSemestre.Nota()</b>
+        </p>
+        <p class="text-body-secondary small">As médias são calculadas automaticamente ao salvar, quando as três notas do bimestre estiverem lançadas.</p>
+    </div>
+
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <a class="btn btn-outline-secondary mx-2" asp-controller="Boletim" asp-action="Listar" asp-route-turmaId="@Model.TurmaId">Voltar</a>
+        @Html.ValidationSummary(false, "", new { @class = "text-danger", style = "margin-bottom: 40px; " })
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidacaoBootstrap" />
+}

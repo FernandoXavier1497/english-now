@@ -1,0 +1,56 @@
+@model IList<EnglishNow.Web.Models.Turma.ListarViewModel>
+@{
+    ViewData["Title"] = "Turmas";
+    var ehAdministrador = User.IsInRole(Perfis.Administrador);
+}
+
+<h1>@(ehAdministrador ? "Lista de Turmas" : "Minhas Turmas")</h1>
+
+@if (ehAdministrador)
+{
+    <div class="py-2">
+        <a class="btn btn-primary" asp-controller="Turma" asp-action="Criar">Nova</a>
+    </div>
+}
+
+@if (Model.Count == 0)
+{
+    <p class="text-body-secondary">Nenhuma turma encontrada.</p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Ano/Semestre</th>
+                    <th scope="col">Nível</th>
+                    <th scope="col">Período</th>
+                    <th scope="col">Professor</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var turma in Model)
+                {
+                    <tr>
+                        <th>@turma.Id</th>
+                        <td>@turma.Ano/@turma.Semestre</td>
+                        <td>@turma.Nivel</td>
+                        <td>@turma.Periodo</td>
+                        <td>@turma.ProfessorNome</td>
+                        <td class="text-nowrap">
+                            <a class="link-underline link-underline-opacity-0" asp-controller="Boletim" asp-action="Listar" asp-route-turmaId="@turma.Id">Alunos e notas</a>
+                            @if (ehAdministrador)
+                            {
+                                <span class="mx-1">|</span>
+                                <a class="link-underline link-underline-opacity-0" asp-controller="Turma" asp-action="Editar" asp-route-id="@turma.Id">Editar</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -1,0 +1,50 @@
+@model EnglishNow.Web.Models.Turma.EditarViewModel
+@{
+    ViewData["Title"] = "Editar Turma";
+}
+
+<h1 style="font-size: 50px;">Editar Turma</h1>
+
+<form class="row g-3 needs-validation" asp-controller="Turma" asp-action="Editar" asp-route-id="@Model.Id" method="post" novalidate>
+    <input type="hidden" asp-for="Id" />
+
+    <div class="col-md-3">
+        <label for="inputAno" class="form-label">Ano</label>
+        <input type="number" class="form-control" id="inputAno" asp-for="Ano" min="2000" max="2100" required>
+    </div>
+    <div class="col-md-3">
+        <label for="inputSemestre" class="form-label">Semestre</label>
+        <select class="form-select" id="inputSemestre" asp-for="Semestre" required>
+            <option value="">Selecione...</option>
+            <option value="1">1º semestre</option>
+            <option value="2">2º semestre</option>
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label for="inputNivel" class="form-label">Nível</label>
+        <input type="text" class="form-control" id="inputNivel" maxlength="30" asp-for="Nivel" required>
+    </div>
+    <div class="col-md-6">
+        <label for="inputPeriodo" class="form-label">Período</label>
+        <input type="text" class="form-control" id="inputPeriodo" maxlength="150" asp-for="Periodo" required>
+    </div>
+    <div class="col-md-6">
+        <label for="inputProfessor" class="form-label">Professor</label>
+        <select class="form-select" id="inputProfessor" asp-for="ProfessorId" asp-items="Model.Professores" required>
+            <option value="">Selecione...</option>
+        </select>
+    </div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+
+        <button type="submit" class="btn btn-danger mx-2" onclick="return confirm('Tem certeza que deseja apagar esta turma?')" formaction="@Url.Action("Excluir", "Turma", new { id = Model.Id })">Apagar</button>
+
+        <a class="btn btn-outline-secondary" asp-controller="Turma" asp-action="Listar">Voltar</a>
+
+        @Html.ValidationSummary(false, "", new { @class = "text-danger", style = "margin-bottom: 40px; " })
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidacaoBootstrap" />
+}

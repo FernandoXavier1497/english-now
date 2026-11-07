@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using EnglishNow.Web.Models.Professor;
 using Microsoft.AspNetCore.Authorization;
 using EnglishNow.Services;
-using EnglishNow.Services.Models.Professor;
+using EnglishNow.Web.Auth;
 using EnglishNow.Web.Mappings;
 
 namespace EnglishNow.Web.Controllers
 {
     [Route("professor")]
-    [Authorize]
+    [Authorize(Roles = Perfis.Administrador)]
     public class ProfessorController : Controller
     {
         private readonly IProfessorService _professorService;
@@ -20,13 +20,11 @@ namespace EnglishNow.Web.Controllers
         [Route("criar")]
         public IActionResult Criar()
         {
-            
             return View();
         }
 
         [HttpPost]
         [Route("criar")]
-
         public IActionResult Criar(CriarViewModel model)
         {
             if (!ModelState.IsValid)
@@ -38,7 +36,7 @@ namespace EnglishNow.Web.Controllers
 
             if (!result.Sucesso)
             {
-                ModelState.AddModelError(string.Empty, result.MensagemErro);
+                ModelState.AddModelError(string.Empty, result.MensagemErro!);
 
                 return View(model);
             }
@@ -47,7 +45,6 @@ namespace EnglishNow.Web.Controllers
         }
 
         [Route("listar")]
-
         public IActionResult Listar()
         {
             var professores = _professorService.Listar();
@@ -62,9 +59,12 @@ namespace EnglishNow.Web.Controllers
         {
             var professor = _professorService.ObterPorId(id);
 
-            var model = professor?.MapToEditarViewNodel();
+            if (professor == null)
+            {
+                return NotFound();
+            }
 
-            return View(model);
+            return View(professor.MapToEditarViewModel());
         }
 
         [Route("editar/{id}")]
@@ -82,7 +82,7 @@ namespace EnglishNow.Web.Controllers
 
             if (!result.Sucesso)
             {
-                ModelState.AddModelError(string.Empty, result.MensagemErro);
+                ModelState.AddModelError(string.Empty, result.MensagemErro!);
 
                 return View(model);
             }
@@ -100,10 +100,11 @@ namespace EnglishNow.Web.Controllers
             {
                 ModelState.AddModelError(string.Empty, result.MensagemErro!);
 
-                return View(model);
+                //Volta para a tela de edição mostrando o motivo (não existe view "Excluir")
+                return View("Editar", model);
             }
 
             return RedirectToAction("Listar");
-        } 
+        }
     }
 }

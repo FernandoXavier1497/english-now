@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using EnglishNow.Repositories;
+using EnglishNow.Services.Enums;
 using EnglishNow.Services.Models.Usuario;
 
 namespace EnglishNow.Services
@@ -51,8 +52,17 @@ namespace EnglishNow.Services
                 return result;
             }
 
+            if (!Enum.IsDefined(typeof(Papel), usuario.PapelId))
+            {
+                result.MensagemErro = "Usuário sem perfil de acesso válido";
+                return result;
+            }
+
             //se chegou até aqui é por quê funcionou
             result.Sucesso = true;
+            result.UsuarioId = usuario.Id;
+            result.Login = usuario.Login;
+            result.Papel = (Papel)usuario.PapelId;
 
             return result;
         }

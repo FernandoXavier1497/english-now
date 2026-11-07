@@ -1,0 +1,19 @@
+<script>
+    (() => {
+        'use strict'
+
+        // Aplica a validação visual do Bootstrap nos formulários com a classe .needs-validation
+        const forms = document.querySelectorAll('.needs-validation')
+
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>

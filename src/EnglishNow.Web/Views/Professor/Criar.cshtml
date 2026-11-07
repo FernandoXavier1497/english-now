@@ -7,7 +7,7 @@
 
 <h1 style ="font-size: 50px;">Novo Professor</h1>
 
-<form class="row g-3 needs-validation" asp-controller="Professor" asp-action="Criar" novalidate>
+<form class="row g-3 needs-validation" asp-controller="Professor" asp-action="Criar" method="post" novalidate>
     <div class="col-md-6">
         <label for="inputLogin" class="form-label">Login</label>
         <input type="text" class="form-control" id="inputLogin" asp-for="Login" required>
@@ -21,7 +21,7 @@
         <input type="text" class="form-control" id="inputNome" placeholder="Informe seu nome." required asp-for="Nome">
     </div>
     <div class="col-6">
-        <label for="inputEmail" class="form-label">E-mail 2</label>
+        <label for="inputEmail" class="form-label">E-mail</label>
         <input type="email" class="form-control" id="inputEmail" placeholder="Digite seu e-mail." required asp-for="Email">
     </div>
     <div class="col-12">
